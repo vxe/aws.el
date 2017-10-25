@@ -1,0 +1,464 @@
+* Overview
+Call AWS api's over http
+* Usage
+M-x ligtsail-create-cheapest-instance
+* Implementation
+** AWS services interface
+*** Global Data
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defcustom lightsail-server-list nil "list of lightsail servers")
+ #+END_SRC
+
+#+BEGIN_SRC elisp :tangle aws.el
+(setq aws-ec2-machine-types (list "t2.nano" "t2.micro" "t2.small" "t2.medium" "t2.large" "t2.xlarge" "t2.2xlarge" "m4.large" "m4.xlarge" "m4.2xlarge" "m4.4xlarge" "m4.10xlarge" "m4.16xlarge" "m3.medium" "m3.large" "m3.xlarge" "m3.2xlarge" "t2.nano" "t2.micro" "t2.small" "t2.medium" "t2.large" "t2.xlarge" "t2.2xlarge" "m4.large" "m4.xlarge" "m4.2xlarge" "m4.4xlarge" "m4.10xlarge" "m4.16xlarge" "m3.medium" "m3.large" "m3.xlarge" "m3.2xlarge"))
+(setq aws-s3-regions (list "us-east-2" "us-east-1" "us-west-1" "us-west-2" "ca-central-1" "ap-south-1" "ap-northeast-2" "ap-southeast-1" "ap-southeast-2" "ap-northeast-1" "eu-central-1" "eu-west-1" "eu-west-2" "sa-east-1"))
+#+END_SRC
+
+*** Compute
+**** EC2
+***** list instances
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun ec2:list-instances ()
+     (interactive)
+     (async-shell-command "aws ec2 describe-instances"
+                          (concat "*EC2 - list instances*")
+                          ))
+ #+END_SRC
+***** list instances table
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun ec2:list-instances-table ()
+   (interactive)
+   (async-shell-command "aws ec2 describe-instances --output table"
+			(concat "*EC2 - list instances table*")))
+ #+END_SRC
+***** list images in a given region
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun ec2:get-images-by-region (region)
+     (interactive "swhat region: ")
+     (async-shell-command (concat "aws ec2 describe-images --owners self --region " region)))
+ #+END_SRC
+***** search for available AMI
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun ec2:search-for-ami (query)
+     (interactive "squery: ") 
+     (async-shell-command (concat "aws ec2 describe-images --owners amazon --filters Name=architecture,Values=x86_64 | grep " query)))
+ #+END_SRC
+**** EC2 Container Service
+**** Lightsail
+***** run remote command , interactive server list
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun lightsail:run-command-int (command) 
+     (interactive "sCommand: ")
+     (let ((server (completing-read "server:"  lightsail-server-list)))
+         (async-shell-command (concat "clush -o" 
+                                      "\""
+                                      " -i ~/.ssh/" server
+                                      " -F ~/.ssh/config_" server
+                                      "\""
+                                      " -w "
+                                      "'" server "'"
+                                      " -B "
+                                      "\""
+                                      command
+                                      "\""
+
+                                      )
+                              (concat "*lightsail* - " server " " command ))))
+ #+END_SRC
+
+***** run remote command 
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun lightsail:run-command (command server) 
+     (interactive "sCommand: \nsServer: ")
+      (async-shell-command (concat "clush -o" 
+                                      "\""
+                                      " -i ~/.ssh/" server
+                                      " -F ~/.ssh/config_" server
+                                      "\""
+                                      " -w "
+                                      "'" server "'"
+                                      " -B "
+                                      "\""
+                                      command
+                                      "\"")
+                              (concat "*lightsail* - " server "" command )))
+ #+END_SRC
+
+***** initialize dev environment
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun lightsail:init-dev-environment ()
+     (interactive)
+     (let ((server (completing-read "server:"  lightsail-server-list)))
+       (lightsail:run-command (concat
+                               "sudo timedatectl set-timezone America/Los_Angeles"
+                               "sudo apt-get -y update;"
+                               "sudo apt-get -y install docker;"
+                               "sudo apt-get -y install python-minimal;"
+                               "sudo apt-get -y install supervisor;"
+                               "sudo apt-get -y install collectdg")
+                              server)))
+ #+END_SRC
+***** change timezone to pacfic
+ #+BEGIN_SRC elisp :tangle aws.el
+ (defun lightsail:change-timezone-to-pacific ()
+     (let ((server (completing-read "server:"  lightsail-server-list)))
+       (lightsail:run-command (concat
+                               "sudo timedatectl set-timezone America/Los_Angeles")
+                              server)))
+
+ #+END_SRC
+**** Elastic Beanstalk
+***** install elastic beanstalk commnad line interface
+ #+BEGIN_SRC elisp :tangle aws.el
+ (defun eb:install-cli ()
+ (interactive)
+ (pip:install-in-current-virtualenv "awsebcli"))
+ #+END_SRC
+***** check dns availability
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun eb:check-dns-availability (domain)
+     (interactive "sdomain ")
+     (async-shell-command (concat "aws elasticbeanstalk check-dns-availability --cname-prefix " domain)))
+ #+END_SRC
+**** Lambda
+**** Batch
+*** Storage
+**** S3
+***** create bucket
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun s3:create-bucket (name)
+     (interactive "sname: ")
+     (let ((region (completing-read "region" aws-s3-regions)))
+       (async-shell-command (concat "aws s3api create-bucket --bucket " name " --region " region " --create-bucket-configuration " region))))
+ #+END_SRC
+**** EFS
+**** Glacier
+**** Storage Gateway
+*** Database
+**** RDS
+**** DynamoDB
+**** ElastiCache
+**** Amazon Redshift
+*** Networking & Content Delivery
+**** VPC
+**** CloudFront
+**** Direct Connect
+**** Route 53
+***** get dns zones
+ #+BEGIN_SRC elisp :tangle aws.el
+ (defun route53:get-hosted-zones ()
+ (interactive)
+ (async-shell-command "aws route53 list-hosted-zones"))
+ #+END_SRC
+***** get domain names currently in dns
+ #+BEGIN_SRC elisp :tangle aws.el
+   (defun route53:get-hosted-zones-by-name ()
+     (interactive)
+     (async-shell-command "aws route53 list-hosted-zones | jq '.HostedZones[].Name'"))
+ #+END_SRC
+***** get more route53 information 
+*** Migration
+**** AWS Migration Hub
+**** Application Discovery Service
+**** Database Migration Service
+**** Server Migration Service
+**** Snowball
+*** Developer Tools
+**** CodeStar
+**** CodeCommit
+**** CodeBuild
+**** CodeDeploy
+**** CodePipeline
+**** X-Ray
+*** Management Tools
+**** CloudWatch
+**** CloudFormation
+**** CloudTrail
+**** Config
+**** OpsWorks
+**** Service Catalog
+**** Trusted Advisor
+**** Managed Services
+*** Security, Identity & Compliance
+**** IAM
+**** Inspector
+**** Certificate Manager
+**** Directory Service
+**** WAF & Shield
+**** Artifact
+**** Amazon Macie
+**** CloudHSM
+*** Analytics
+**** Athena
+**** EMR
+**** CloudSearch
+**** Elasticsearch Service
+**** Kinesis
+**** Data Pipeline
+**** QuickSight
+**** AWS Glue
+*** Artificial Intelligence
+**** Lex
+**** Amazon Polly
+**** Rekognition
+**** Machine Learning
+*** Internet of Things
+**** AWS IoT
+**** AWS Greengrass
+*** Contact Center
+**** Amazon Connect
+*** Game Development
+**** Amazon GameLift
+*** Mobile Services
+**** Mobile Hub
+**** Cognito
+**** Device Farm
+**** Mobile Analytics
+**** Pinpoint
+*** Application Services
+**** Step Functions
+**** SWF
+**** API Gateway
+**** Elastic Transcoder
+*** Messaging
+**** Simple Queue Service
+**** Simple Notification Service
+**** Simple Email Service
+*** Business Productivity
+**** WorkDocs
+**** WorkMail
+**** Amazon Chime
+*** Desktop & App Streaming
+**** WorkSpaces
+**** AppStream 2.0
+** Command Server
+*** Dependencies
+    #+BEGIN_SRC python :tangle server.py
+      import boto3
+      import re
+      import os
+
+      from bottle import route, run
+    #+END_SRC
+*** Services
+**** Compute
+***** EC2
+***** EC2 Container Service
+***** Lightsail 
+
+****** get list of blueprint ids for instance creation
+       #+BEGIN_SRC python :tangle server.py
+	 def get_blueprint_list():
+	   client = boto3.client('lightsail')
+
+	   blueprint_list = [] 
+	   for blueprint in client.get_blueprints()['blueprints']:
+	       blueprint_list.append(blueprint['blueprintId'])
+
+	   return blueprint_list
+       #+END_SRC
+******* get ubuntu blueprint id
+	  #+BEGIN_SRC python :tangle server.py
+
+def get_ubuntu_blueprint_id():
+    blueprint_ids = get_blueprint_list()
+    ubuntu_pattern = re.compile(r'.*ubuntu*')
+
+    ubuntu_blueprint = filter(ubuntu_pattern.search, blueprint_ids)
+
+    return ubuntu_blueprint[0]
+    
+	  #+END_SRC
+
+****** get dict of bundle ids and prices for instance creation
+       #+BEGIN_SRC python :tangle server.py
+	 def get_bundle_pricing():
+	     client = boto3.client('lightsail')
+	     bundle_pricing = {}
+
+	     for bundle in client.get_bundles()['bundles']:
+		 bundle_pricing[bundle['bundleId']] = bundle['price']
+
+	     return bundle_pricing
+
+       #+END_SRC
+******* get cheapest bundle
+	#+BEGIN_SRC python :tangle server.py
+	  def get_cheapest_bundle():
+	      return min(get_bundle_pricing(), key=get_bundle_pricing().get)
+
+	#+END_SRC
+
+	#+RESULTS:
+****** create ssh keypair
+       #+BEGIN_SRC python :tangle server.py
+	 def generate_keypair(key_name):
+	   client = boto3.client('lightsail')
+	   key = client.create_key_pair(keyPairName=key_name)
+	   ssh_config = """
+	   IdentitiesOnly yes
+	   StrictHostKeyChecking no
+	   AddKeysToAgent yes
+
+	   User ubuntu
+	   ForwardAgent yes
+	   IdentityFile ~/.ssh/%(key)s
+
+	   Host *
+	     ForwardAgent yes
+	     StrictHostKeyChecking no
+	     ServerAliveInterval 90
+
+	   """ % {"key": key_name}
+
+
+	   private_key_filepath = os.path.expanduser("~/.ssh/" + key_name)
+	   public_key_filepath = os.path.expanduser("~/.ssh/" + key_name + ".pub")
+	   ssh_config_filepath = os.path.expanduser("~/.ssh/" + "config_" + key_name)
+
+	   private_key_file = open(private_key_filepath , 'w')
+	   private_key_file.write(key['privateKeyBase64'])
+	   private_key_file.close()
+	   os.chmod(private_key_filepath, 0600)
+
+	   public_key_file =  open(public_key_filepath, 'w')
+	   public_key_file.write(key['publicKeyBase64'])
+	   public_key_file.close()
+	   os.chmod(public_key_filepath, 0644)
+
+	   ssh_config_file = open(ssh_config_filepath, 'w')
+	   ssh_config_file.write(ssh_config)
+	   ssh_config_file.close()
+	   os.chmod(ssh_config_filepath, 0644)
+       #+END_SRC
+****** create cheapest possible lightsail instance
+       #+BEGIN_SRC python :tangle server.py
+	 def create_cheapest_lightsail_instance(name,zone,key_name):
+	     client = boto3.client('lightsail')
+	     names = []
+	     names.append(name)
+
+	     client.create_instances(instanceNames=names,\
+				     availabilityZone=zone, \
+				     bundleId=get_cheapest_bundle(), \
+				     blueprintId=get_ubuntu_blueprint_id(), \
+				     keyPairName=key_name)
+
+	     return get_ip_address_of_instance(name)
+
+       #+END_SRC
+******* snippet: create lightsail keypair
+	#+BEGIN_SRC python 
+	import boto3
+	import random
+	  
+	client = boto3.client('lightsail')
+	  
+	key_name = "key-" + str(random.randint(1,100000))
+	keypair = client.create_key_pair('key_name')
+	#+END_SRC
+****** destroy instance
+       #+BEGIN_SRC python :tangle server.py
+	 def destroy_lightsail_instance(name):
+	   client = boto3.client('lightsail')
+	   response = client.delete_instance(instanceName=name)
+	   return response
+       #+END_SRC
+****** get public ip address of instance
+       #+BEGIN_SRC python :tangle server.py
+       def get_ip_address_of_instance(instance_name):
+	     client = boto3.client('lightsail')
+	     return client.get_instance(instanceName=instance_name)["instance"]["publicIpAddress"]
+       #+END_SRC
+***** Elastic Beanstalk
+***** Lambda
+***** Batch
+**** Storage
+***** S3
+***** EFS
+***** Glacier
+***** Storage Gateway
+**** Database
+***** RDS
+***** DynamoDB
+***** ElastiCache
+***** Amazon Redshift
+**** Networking & Content Delivery
+***** VPC
+***** CloudFront
+***** Direct Connect
+***** Route 53
+**** Migration
+***** AWS Migration Hub
+***** Application Discovery Service
+***** Database Migration Service
+***** Server Migration Service
+***** Snowball
+**** Developer Tools
+***** CodeStar
+***** CodeCommit
+***** CodeBuild
+***** CodeDeploy
+***** CodePipeline
+***** X-Ray
+**** Management Tools
+***** CloudWatch
+***** CloudFormation
+***** CloudTrail
+***** Config
+***** OpsWorks
+***** Service Catalog
+***** Trusted Advisor
+***** Managed Services
+**** Security, Identity & Compliance
+***** IAM
+***** Inspector
+***** Certificate Manager
+***** Directory Service
+***** WAF & Shield
+***** Artifact
+***** Amazon Macie
+***** CloudHSM
+**** Analytics
+***** Athena
+***** EMR
+***** CloudSearch
+***** Elasticsearch Service
+***** Kinesis
+***** Data Pipeline
+***** QuickSight
+***** AWS Glue
+**** Artificial Intelligence
+***** Lex
+***** Amazon Polly
+***** Rekognition
+***** Machine Learning
+**** Internet of Things
+***** AWS IoT
+***** AWS Greengrass
+**** Contact Center
+***** Amazon Connect
+**** Game Development
+***** Amazon GameLift
+**** Mobile Services
+***** Mobile Hub
+***** Cognito
+***** Device Farm
+***** Mobile Analytics
+***** Pinpoint
+**** Application Services
+***** Step Functions
+***** SWF
+***** API Gateway
+***** Elastic Transcoder
+**** Messaging
+***** Simple Queue Service
+***** Simple Notification Service
+***** Simple Email Service
+**** Business Productivity
+***** WorkDocs
+***** WorkMail
+***** Amazon Chime
+**** Desktop & App Streaming
+***** WorkSpaces
+***** AppStream 2.0
