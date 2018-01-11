@@ -1,10 +1,13 @@
-* Overview :noexport:
-* Usage 
-M-x ligtsail-create-cheapest-instance
-* Implementation :TOC:
+# -*- mode:org -*-
+#+TITLE: README
+#+STARTUP: indent
+#+OPTIONS: toc:nil
+  aws helpers, primarily lightsail at this point
+** Overview                                                             :TOC:
 - [[#usage][Usage]]
-  - [[#aws-services-interface][AWS services interface]]
-    - [[#global-data][Global Data]]
+- [[#implementation][Implementation]]
+  - [[#global-data][Global Data]]
+  - [[#aws-services][AWS services]]
     - [[#compute][Compute]]
       - [[#ec2][EC2]]
         - [[#list-instances][list instances]]
@@ -13,6 +16,7 @@ M-x ligtsail-create-cheapest-instance
         - [[#search-for-available-ami][search for available AMI]]
       - [[#ec2-container-service][EC2 Container Service]]
       - [[#lightsail][Lightsail]]
+        - [[#spin-up-new-lightsail-instance][spin up new lightsail instance]]
         - [[#run-remote-command--interactive-server-list][run remote command , interactive server list]]
         - [[#run-remote-command][run remote command]]
         - [[#initialize-dev-environment][initialize dev environment]]
@@ -115,117 +119,11 @@ M-x ligtsail-create-cheapest-instance
     - [[#desktop--app-streaming][Desktop & App Streaming]]
       - [[#workspaces][WorkSpaces]]
       - [[#appstream-20][AppStream 2.0]]
-  - [[#command-server][Command Server]]
-    - [[#dependencies][Dependencies]]
-    - [[#services][Services]]
-      - [[#compute-1][Compute]]
-        - [[#ec2-1][EC2]]
-        - [[#ec2-container-service-1][EC2 Container Service]]
-        - [[#lightsail-1][Lightsail]]
-          - [[#get-list-of-blueprint-ids-for-instance-creation][get list of blueprint ids for instance creation]]
-            - [[#get-ubuntu-blueprint-id][get ubuntu blueprint id]]
-          - [[#get-dict-of-bundle-ids-and-prices-for-instance-creation][get dict of bundle ids and prices for instance creation]]
-            - [[#get-cheapest-bundle][get cheapest bundle]]
-          - [[#create-ssh-keypair][create ssh keypair]]
-          - [[#create-cheapest-possible-lightsail-instance][create cheapest possible lightsail instance]]
-            - [[#snippet-create-lightsail-keypair][snippet: create lightsail keypair]]
-          - [[#destroy-instance][destroy instance]]
-          - [[#get-public-ip-address-of-instance][get public ip address of instance]]
-        - [[#elastic-beanstalk-1][Elastic Beanstalk]]
-        - [[#lambda-1][Lambda]]
-        - [[#batch-1][Batch]]
-      - [[#storage-1][Storage]]
-        - [[#s3-1][S3]]
-        - [[#efs-1][EFS]]
-        - [[#glacier-1][Glacier]]
-        - [[#storage-gateway-1][Storage Gateway]]
-      - [[#database-1][Database]]
-        - [[#rds-1][RDS]]
-        - [[#dynamodb-1][DynamoDB]]
-        - [[#elasticache-1][ElastiCache]]
-        - [[#amazon-redshift-1][Amazon Redshift]]
-      - [[#networking--content-delivery-1][Networking & Content Delivery]]
-        - [[#vpc-1][VPC]]
-        - [[#cloudfront-1][CloudFront]]
-        - [[#direct-connect-1][Direct Connect]]
-        - [[#route-53-1][Route 53]]
-      - [[#migration-1][Migration]]
-        - [[#aws-migration-hub-1][AWS Migration Hub]]
-        - [[#application-discovery-service-1][Application Discovery Service]]
-        - [[#database-migration-service-1][Database Migration Service]]
-        - [[#server-migration-service-1][Server Migration Service]]
-        - [[#snowball-1][Snowball]]
-      - [[#developer-tools-1][Developer Tools]]
-        - [[#codestar-1][CodeStar]]
-        - [[#codecommit-1][CodeCommit]]
-        - [[#codebuild-1][CodeBuild]]
-        - [[#codedeploy-1][CodeDeploy]]
-        - [[#codepipeline-1][CodePipeline]]
-        - [[#x-ray-1][X-Ray]]
-      - [[#management-tools-1][Management Tools]]
-        - [[#cloudwatch-1][CloudWatch]]
-        - [[#cloudformation-1][CloudFormation]]
-        - [[#cloudtrail-1][CloudTrail]]
-        - [[#config-1][Config]]
-        - [[#opsworks-1][OpsWorks]]
-        - [[#service-catalog-1][Service Catalog]]
-        - [[#trusted-advisor-1][Trusted Advisor]]
-        - [[#managed-services-1][Managed Services]]
-      - [[#security-identity--compliance-1][Security, Identity & Compliance]]
-        - [[#iam-1][IAM]]
-        - [[#inspector-1][Inspector]]
-        - [[#certificate-manager-1][Certificate Manager]]
-        - [[#directory-service-1][Directory Service]]
-        - [[#waf--shield-1][WAF & Shield]]
-        - [[#artifact-1][Artifact]]
-        - [[#amazon-macie-1][Amazon Macie]]
-        - [[#cloudhsm-1][CloudHSM]]
-      - [[#analytics-1][Analytics]]
-        - [[#athena-1][Athena]]
-        - [[#emr-1][EMR]]
-        - [[#cloudsearch-1][CloudSearch]]
-        - [[#elasticsearch-service-1][Elasticsearch Service]]
-        - [[#kinesis-1][Kinesis]]
-        - [[#data-pipeline-1][Data Pipeline]]
-        - [[#quicksight-1][QuickSight]]
-        - [[#aws-glue-1][AWS Glue]]
-      - [[#artificial-intelligence-1][Artificial Intelligence]]
-        - [[#lex-1][Lex]]
-        - [[#amazon-polly-1][Amazon Polly]]
-        - [[#rekognition-1][Rekognition]]
-        - [[#machine-learning-1][Machine Learning]]
-      - [[#internet-of-things-1][Internet of Things]]
-        - [[#aws-iot-1][AWS IoT]]
-        - [[#aws-greengrass-1][AWS Greengrass]]
-      - [[#contact-center-1][Contact Center]]
-        - [[#amazon-connect-1][Amazon Connect]]
-      - [[#game-development-1][Game Development]]
-        - [[#amazon-gamelift-1][Amazon GameLift]]
-      - [[#mobile-services-1][Mobile Services]]
-        - [[#mobile-hub-1][Mobile Hub]]
-        - [[#cognito-1][Cognito]]
-        - [[#device-farm-1][Device Farm]]
-        - [[#mobile-analytics-1][Mobile Analytics]]
-        - [[#pinpoint-1][Pinpoint]]
-      - [[#application-services-1][Application Services]]
-        - [[#step-functions-1][Step Functions]]
-        - [[#swf-1][SWF]]
-        - [[#api-gateway-1][API Gateway]]
-        - [[#elastic-transcoder-1][Elastic Transcoder]]
-      - [[#messaging-1][Messaging]]
-        - [[#simple-queue-service-1][Simple Queue Service]]
-        - [[#simple-notification-service-1][Simple Notification Service]]
-        - [[#simple-email-service-1][Simple Email Service]]
-      - [[#business-productivity-1][Business Productivity]]
-        - [[#workdocs-1][WorkDocs]]
-        - [[#workmail-1][WorkMail]]
-        - [[#amazon-chime-1][Amazon Chime]]
-      - [[#desktop--app-streaming-1][Desktop & App Streaming]]
-        - [[#workspaces-1][WorkSpaces]]
-        - [[#appstream-20-1][AppStream 2.0]]
 
-** AWS services interface
-*** Global Data
+* Usage 
+  1. install [[https://aws.amazon.com/cli/][awscli]]
+* Implementation 
+** Global Data
  #+BEGIN_SRC elisp :tangle aws.el
    (defcustom lightsail-server-list nil "list of lightsail servers")
  #+END_SRC
@@ -235,6 +133,7 @@ M-x ligtsail-create-cheapest-instance
 (setq aws-s3-regions (list "us-east-2" "us-east-1" "us-west-1" "us-west-2" "ca-central-1" "ap-south-1" "ap-northeast-2" "ap-southeast-1" "ap-southeast-2" "ap-northeast-1" "eu-central-1" "eu-west-1" "eu-west-2" "sa-east-1"))
 #+END_SRC
 
+** AWS services
 *** Compute
 **** EC2
 ***** list instances
@@ -266,6 +165,10 @@ M-x ligtsail-create-cheapest-instance
  #+END_SRC
 **** EC2 Container Service
 **** Lightsail
+***** spin up new lightsail instance
+      #+BEGIN_SRC elisp :tangle aws.el
+      
+      #+END_SRC
 ***** run remote command , interactive server list
  #+BEGIN_SRC elisp :tangle aws.el
    (defun lightsail:run-command-int (command) 
@@ -452,234 +355,4 @@ M-x ligtsail-create-cheapest-instance
 *** Desktop & App Streaming
 **** WorkSpaces
 **** AppStream 2.0
-** Command Server
-*** Dependencies
-    #+BEGIN_SRC python :tangle server.py
-      import boto3
-      import re
-      import os
 
-      from bottle import route, run
-    #+END_SRC
-*** Services
-**** Compute
-***** EC2
-***** EC2 Container Service
-***** Lightsail 
-
-****** get list of blueprint ids for instance creation
-       #+BEGIN_SRC python :tangle server.py
-	 def get_blueprint_list():
-	   client = boto3.client('lightsail')
-
-	   blueprint_list = [] 
-	   for blueprint in client.get_blueprints()['blueprints']:
-	       blueprint_list.append(blueprint['blueprintId'])
-
-	   return blueprint_list
-       #+END_SRC
-******* get ubuntu blueprint id
-	  #+BEGIN_SRC python :tangle server.py
-
-def get_ubuntu_blueprint_id():
-    blueprint_ids = get_blueprint_list()
-    ubuntu_pattern = re.compile(r'.*ubuntu*')
-
-    ubuntu_blueprint = filter(ubuntu_pattern.search, blueprint_ids)
-
-    return ubuntu_blueprint[0]
-    
-	  #+END_SRC
-
-****** get dict of bundle ids and prices for instance creation
-       #+BEGIN_SRC python :tangle server.py
-	 def get_bundle_pricing():
-	     client = boto3.client('lightsail')
-	     bundle_pricing = {}
-
-	     for bundle in client.get_bundles()['bundles']:
-		 bundle_pricing[bundle['bundleId']] = bundle['price']
-
-	     return bundle_pricing
-
-       #+END_SRC
-******* get cheapest bundle
-	#+BEGIN_SRC python :tangle server.py
-	  def get_cheapest_bundle():
-	      return min(get_bundle_pricing(), key=get_bundle_pricing().get)
-
-	#+END_SRC
-
-	#+RESULTS:
-****** create ssh keypair
-       #+BEGIN_SRC python :tangle server.py
-	 def generate_keypair(key_name):
-	   client = boto3.client('lightsail')
-	   key = client.create_key_pair(keyPairName=key_name)
-	   ssh_config = """
-	   IdentitiesOnly yes
-	   StrictHostKeyChecking no
-	   AddKeysToAgent yes
-
-	   User ubuntu
-	   ForwardAgent yes
-	   IdentityFile ~/.ssh/%(key)s
-
-	   Host *
-	     ForwardAgent yes
-	     StrictHostKeyChecking no
-	     ServerAliveInterval 90
-
-	   """ % {"key": key_name}
-
-
-	   private_key_filepath = os.path.expanduser("~/.ssh/" + key_name)
-	   public_key_filepath = os.path.expanduser("~/.ssh/" + key_name + ".pub")
-	   ssh_config_filepath = os.path.expanduser("~/.ssh/" + "config_" + key_name)
-
-	   private_key_file = open(private_key_filepath , 'w')
-	   private_key_file.write(key['privateKeyBase64'])
-	   private_key_file.close()
-	   os.chmod(private_key_filepath, 0600)
-
-	   public_key_file =  open(public_key_filepath, 'w')
-	   public_key_file.write(key['publicKeyBase64'])
-	   public_key_file.close()
-	   os.chmod(public_key_filepath, 0644)
-
-	   ssh_config_file = open(ssh_config_filepath, 'w')
-	   ssh_config_file.write(ssh_config)
-	   ssh_config_file.close()
-	   os.chmod(ssh_config_filepath, 0644)
-       #+END_SRC
-****** create cheapest possible lightsail instance
-       #+BEGIN_SRC python :tangle server.py
-	 def create_cheapest_lightsail_instance(name,zone,key_name):
-	     client = boto3.client('lightsail')
-	     names = []
-	     names.append(name)
-
-	     client.create_instances(instanceNames=names,\
-				     availabilityZone=zone, \
-				     bundleId=get_cheapest_bundle(), \
-				     blueprintId=get_ubuntu_blueprint_id(), \
-				     keyPairName=key_name)
-
-	     return get_ip_address_of_instance(name)
-
-       #+END_SRC
-******* snippet: create lightsail keypair
-	#+BEGIN_SRC python 
-	import boto3
-	import random
-	  
-	client = boto3.client('lightsail')
-	  
-	key_name = "key-" + str(random.randint(1,100000))
-	keypair = client.create_key_pair('key_name')
-	#+END_SRC
-****** destroy instance
-       #+BEGIN_SRC python :tangle server.py
-	 def destroy_lightsail_instance(name):
-	   client = boto3.client('lightsail')
-	   response = client.delete_instance(instanceName=name)
-	   return response
-       #+END_SRC
-****** get public ip address of instance
-       #+BEGIN_SRC python :tangle server.py
-       def get_ip_address_of_instance(instance_name):
-	     client = boto3.client('lightsail')
-	     return client.get_instance(instanceName=instance_name)["instance"]["publicIpAddress"]
-       #+END_SRC
-***** Elastic Beanstalk
-***** Lambda
-***** Batch
-**** Storage
-***** S3
-***** EFS
-***** Glacier
-***** Storage Gateway
-**** Database
-***** RDS
-***** DynamoDB
-***** ElastiCache
-***** Amazon Redshift
-**** Networking & Content Delivery
-***** VPC
-***** CloudFront
-***** Direct Connect
-***** Route 53
-**** Migration
-***** AWS Migration Hub
-***** Application Discovery Service
-***** Database Migration Service
-***** Server Migration Service
-***** Snowball
-**** Developer Tools
-***** CodeStar
-***** CodeCommit
-***** CodeBuild
-***** CodeDeploy
-***** CodePipeline
-***** X-Ray
-**** Management Tools
-***** CloudWatch
-***** CloudFormation
-***** CloudTrail
-***** Config
-***** OpsWorks
-***** Service Catalog
-***** Trusted Advisor
-***** Managed Services
-**** Security, Identity & Compliance
-***** IAM
-***** Inspector
-***** Certificate Manager
-***** Directory Service
-***** WAF & Shield
-***** Artifact
-***** Amazon Macie
-***** CloudHSM
-**** Analytics
-***** Athena
-***** EMR
-***** CloudSearch
-***** Elasticsearch Service
-***** Kinesis
-***** Data Pipeline
-***** QuickSight
-***** AWS Glue
-**** Artificial Intelligence
-***** Lex
-***** Amazon Polly
-***** Rekognition
-***** Machine Learning
-**** Internet of Things
-***** AWS IoT
-***** AWS Greengrass
-**** Contact Center
-***** Amazon Connect
-**** Game Development
-***** Amazon GameLift
-**** Mobile Services
-***** Mobile Hub
-***** Cognito
-***** Device Farm
-***** Mobile Analytics
-***** Pinpoint
-**** Application Services
-***** Step Functions
-***** SWF
-***** API Gateway
-***** Elastic Transcoder
-**** Messaging
-***** Simple Queue Service
-***** Simple Notification Service
-***** Simple Email Service
-**** Business Productivity
-***** WorkDocs
-***** WorkMail
-***** Amazon Chime
-**** Desktop & App Streaming
-***** WorkSpaces
-***** AppStream 2.0
