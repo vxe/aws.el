@@ -7,136 +7,172 @@
 - [[#usage][Usage]]
 - [[#implementation][Implementation]]
   - [[#global-data][Global Data]]
-  - [[#aws-services][AWS services]]
-    - [[#compute][Compute]]
-      - [[#ec2][EC2]]
-        - [[#list-instances][list instances]]
-        - [[#list-instances-table][list instances table]]
-        - [[#list-images-in-a-given-region][list images in a given region]]
-        - [[#search-for-available-ami][search for available AMI]]
-      - [[#ec2-container-service][EC2 Container Service]]
-      - [[#lightsail][Lightsail]]
-        - [[#spin-up-new-lightsail-instance][spin up new lightsail instance]]
-        - [[#run-remote-command--interactive-server-list][run remote command , interactive server list]]
-        - [[#run-remote-command][run remote command]]
-        - [[#initialize-dev-environment][initialize dev environment]]
-        - [[#change-timezone-to-pacfic][change timezone to pacfic]]
-      - [[#elastic-beanstalk][Elastic Beanstalk]]
-        - [[#install-elastic-beanstalk-commnad-line-interface][install elastic beanstalk commnad line interface]]
-        - [[#check-dns-availability][check dns availability]]
-      - [[#lambda][Lambda]]
-      - [[#batch][Batch]]
-    - [[#storage][Storage]]
-      - [[#s3][S3]]
-        - [[#create-bucket][create bucket]]
-      - [[#efs][EFS]]
-      - [[#glacier][Glacier]]
-      - [[#storage-gateway][Storage Gateway]]
-    - [[#database][Database]]
-      - [[#rds][RDS]]
-      - [[#dynamodb][DynamoDB]]
-      - [[#elasticache][ElastiCache]]
-      - [[#amazon-redshift][Amazon Redshift]]
-    - [[#networking--content-delivery][Networking & Content Delivery]]
-      - [[#vpc][VPC]]
-      - [[#cloudfront][CloudFront]]
-      - [[#direct-connect][Direct Connect]]
-      - [[#route-53][Route 53]]
-        - [[#get-dns-zones][get dns zones]]
-        - [[#get-domain-names-currently-in-dns][get domain names currently in dns]]
-        - [[#get-more-route53-information][get more route53 information]]
-    - [[#migration][Migration]]
-      - [[#aws-migration-hub][AWS Migration Hub]]
-      - [[#application-discovery-service][Application Discovery Service]]
-      - [[#database-migration-service][Database Migration Service]]
-      - [[#server-migration-service][Server Migration Service]]
-      - [[#snowball][Snowball]]
-    - [[#developer-tools][Developer Tools]]
-      - [[#codestar][CodeStar]]
-      - [[#codecommit][CodeCommit]]
-      - [[#codebuild][CodeBuild]]
-      - [[#codedeploy][CodeDeploy]]
-      - [[#codepipeline][CodePipeline]]
-      - [[#x-ray][X-Ray]]
-    - [[#management-tools][Management Tools]]
-      - [[#cloudwatch][CloudWatch]]
-      - [[#cloudformation][CloudFormation]]
-      - [[#cloudtrail][CloudTrail]]
-      - [[#config][Config]]
-      - [[#opsworks][OpsWorks]]
-      - [[#service-catalog][Service Catalog]]
-      - [[#trusted-advisor][Trusted Advisor]]
-      - [[#managed-services][Managed Services]]
-    - [[#security-identity--compliance][Security, Identity & Compliance]]
-      - [[#iam][IAM]]
-      - [[#inspector][Inspector]]
-      - [[#certificate-manager][Certificate Manager]]
-      - [[#directory-service][Directory Service]]
-      - [[#waf--shield][WAF & Shield]]
-      - [[#artifact][Artifact]]
-      - [[#amazon-macie][Amazon Macie]]
-      - [[#cloudhsm][CloudHSM]]
-    - [[#analytics][Analytics]]
-      - [[#athena][Athena]]
-      - [[#emr][EMR]]
-      - [[#cloudsearch][CloudSearch]]
-      - [[#elasticsearch-service][Elasticsearch Service]]
-      - [[#kinesis][Kinesis]]
-      - [[#data-pipeline][Data Pipeline]]
-      - [[#quicksight][QuickSight]]
-      - [[#aws-glue][AWS Glue]]
-    - [[#artificial-intelligence][Artificial Intelligence]]
-      - [[#lex][Lex]]
-      - [[#amazon-polly][Amazon Polly]]
-      - [[#rekognition][Rekognition]]
-      - [[#machine-learning][Machine Learning]]
-    - [[#internet-of-things][Internet of Things]]
-      - [[#aws-iot][AWS IoT]]
-      - [[#aws-greengrass][AWS Greengrass]]
-    - [[#contact-center][Contact Center]]
-      - [[#amazon-connect][Amazon Connect]]
-    - [[#game-development][Game Development]]
-      - [[#amazon-gamelift][Amazon GameLift]]
-    - [[#mobile-services][Mobile Services]]
-      - [[#mobile-hub][Mobile Hub]]
-      - [[#cognito][Cognito]]
-      - [[#device-farm][Device Farm]]
-      - [[#mobile-analytics][Mobile Analytics]]
-      - [[#pinpoint][Pinpoint]]
-    - [[#application-services][Application Services]]
-      - [[#step-functions][Step Functions]]
-      - [[#swf][SWF]]
-      - [[#api-gateway][API Gateway]]
-      - [[#elastic-transcoder][Elastic Transcoder]]
-    - [[#messaging][Messaging]]
-      - [[#simple-queue-service][Simple Queue Service]]
-      - [[#simple-notification-service][Simple Notification Service]]
-      - [[#simple-email-service][Simple Email Service]]
-    - [[#business-productivity][Business Productivity]]
-      - [[#workdocs][WorkDocs]]
-      - [[#workmail][WorkMail]]
-      - [[#amazon-chime][Amazon Chime]]
-    - [[#desktop--app-streaming][Desktop & App Streaming]]
-      - [[#workspaces][WorkSpaces]]
-      - [[#appstream-20][AppStream 2.0]]
+    - [[#compute-machine-types][compute machine types]]
+    - [[#aws-regions][aws-regions]]
+  - [[#procedures][Procedures]]
+    - [[#utilities][Utilities]]
+      - [[#aws-top-level-command][aws top level command]]
+        - [[#version][version]]
+    - [[#aws-services][AWS services]]
+      - [[#compute][Compute]]
+        - [[#ec2][EC2]]
+          - [[#list-instances][list instances]]
+          - [[#list-instances-table][list instances table]]
+          - [[#list-images-in-a-given-region][list images in a given region]]
+          - [[#search-for-available-ami][search for available AMI]]
+        - [[#ec2-container-service][EC2 Container Service]]
+        - [[#lightsail][Lightsail]]
+          - [[#get-instances][get instances]]
+          - [[#spin-up-new-lightsail-instance][spin up new lightsail instance]]
+          - [[#run-remote-command--interactive-server-list][run remote command , interactive server list]]
+          - [[#run-remote-command][run remote command]]
+          - [[#initialize-dev-environment][initialize dev environment]]
+          - [[#change-timezone-to-pacfic][change timezone to pacfic]]
+        - [[#elastic-beanstalk][Elastic Beanstalk]]
+          - [[#install-elastic-beanstalk-commnad-line-interface][install elastic beanstalk commnad line interface]]
+          - [[#check-dns-availability][check dns availability]]
+        - [[#lambda][Lambda]]
+        - [[#batch][Batch]]
+      - [[#storage][Storage]]
+        - [[#s3][S3]]
+          - [[#create-bucket][create bucket]]
+        - [[#efs][EFS]]
+        - [[#glacier][Glacier]]
+        - [[#storage-gateway][Storage Gateway]]
+      - [[#database][Database]]
+        - [[#rds][RDS]]
+        - [[#dynamodb][DynamoDB]]
+        - [[#elasticache][ElastiCache]]
+        - [[#amazon-redshift][Amazon Redshift]]
+      - [[#networking--content-delivery][Networking & Content Delivery]]
+        - [[#vpc][VPC]]
+        - [[#cloudfront][CloudFront]]
+        - [[#direct-connect][Direct Connect]]
+        - [[#route-53][Route 53]]
+          - [[#get-dns-zones][get dns zones]]
+          - [[#get-domain-names-currently-in-dns][get domain names currently in dns]]
+          - [[#get-more-route53-information][get more route53 information]]
+      - [[#migration][Migration]]
+        - [[#aws-migration-hub][AWS Migration Hub]]
+        - [[#application-discovery-service][Application Discovery Service]]
+        - [[#database-migration-service][Database Migration Service]]
+        - [[#server-migration-service][Server Migration Service]]
+        - [[#snowball][Snowball]]
+      - [[#developer-tools][Developer Tools]]
+        - [[#codestar][CodeStar]]
+        - [[#codecommit][CodeCommit]]
+        - [[#codebuild][CodeBuild]]
+        - [[#codedeploy][CodeDeploy]]
+        - [[#codepipeline][CodePipeline]]
+        - [[#x-ray][X-Ray]]
+      - [[#management-tools][Management Tools]]
+        - [[#cloudwatch][CloudWatch]]
+        - [[#cloudformation][CloudFormation]]
+        - [[#cloudtrail][CloudTrail]]
+        - [[#config][Config]]
+        - [[#opsworks][OpsWorks]]
+        - [[#service-catalog][Service Catalog]]
+        - [[#trusted-advisor][Trusted Advisor]]
+        - [[#managed-services][Managed Services]]
+      - [[#security-identity--compliance][Security, Identity & Compliance]]
+        - [[#iam][IAM]]
+        - [[#inspector][Inspector]]
+        - [[#certificate-manager][Certificate Manager]]
+        - [[#directory-service][Directory Service]]
+        - [[#waf--shield][WAF & Shield]]
+        - [[#artifact][Artifact]]
+        - [[#amazon-macie][Amazon Macie]]
+        - [[#cloudhsm][CloudHSM]]
+      - [[#analytics][Analytics]]
+        - [[#athena][Athena]]
+        - [[#emr][EMR]]
+        - [[#cloudsearch][CloudSearch]]
+        - [[#elasticsearch-service][Elasticsearch Service]]
+        - [[#kinesis][Kinesis]]
+        - [[#data-pipeline][Data Pipeline]]
+        - [[#quicksight][QuickSight]]
+        - [[#aws-glue][AWS Glue]]
+      - [[#artificial-intelligence][Artificial Intelligence]]
+        - [[#lex][Lex]]
+        - [[#amazon-polly][Amazon Polly]]
+        - [[#rekognition][Rekognition]]
+        - [[#machine-learning][Machine Learning]]
+      - [[#internet-of-things][Internet of Things]]
+        - [[#aws-iot][AWS IoT]]
+        - [[#aws-greengrass][AWS Greengrass]]
+      - [[#contact-center][Contact Center]]
+        - [[#amazon-connect][Amazon Connect]]
+      - [[#game-development][Game Development]]
+        - [[#amazon-gamelift][Amazon GameLift]]
+      - [[#mobile-services][Mobile Services]]
+        - [[#mobile-hub][Mobile Hub]]
+        - [[#cognito][Cognito]]
+        - [[#device-farm][Device Farm]]
+        - [[#mobile-analytics][Mobile Analytics]]
+        - [[#pinpoint][Pinpoint]]
+      - [[#application-services][Application Services]]
+        - [[#step-functions][Step Functions]]
+        - [[#swf][SWF]]
+        - [[#api-gateway][API Gateway]]
+        - [[#elastic-transcoder][Elastic Transcoder]]
+      - [[#messaging][Messaging]]
+        - [[#simple-queue-service][Simple Queue Service]]
+        - [[#simple-notification-service][Simple Notification Service]]
+        - [[#simple-email-service][Simple Email Service]]
+      - [[#business-productivity][Business Productivity]]
+        - [[#workdocs][WorkDocs]]
+        - [[#workmail][WorkMail]]
+        - [[#amazon-chime][Amazon Chime]]
+      - [[#desktop--app-streaming][Desktop & App Streaming]]
+        - [[#workspaces][WorkSpaces]]
+        - [[#appstream-20][AppStream 2.0]]
 
 * Usage 
-  1. install [[https://aws.amazon.com/cli/][awscli]]
+0. install [[https://stedolan.github.io/jq/][jq]]
+1. install [[https://aws.amazon.com/cli/][awscli]]
+     Nothing below will work if its not on your path/virtualenv
 * Implementation 
 ** Global Data
  #+BEGIN_SRC elisp :tangle aws.el
    (defcustom lightsail-server-list nil "list of lightsail servers")
  #+END_SRC
-
+*** compute machine types
 #+BEGIN_SRC elisp :tangle aws.el
 (setq aws-ec2-machine-types (list "t2.nano" "t2.micro" "t2.small" "t2.medium" "t2.large" "t2.xlarge" "t2.2xlarge" "m4.large" "m4.xlarge" "m4.2xlarge" "m4.4xlarge" "m4.10xlarge" "m4.16xlarge" "m3.medium" "m3.large" "m3.xlarge" "m3.2xlarge" "t2.nano" "t2.micro" "t2.small" "t2.medium" "t2.large" "t2.xlarge" "t2.2xlarge" "m4.large" "m4.xlarge" "m4.2xlarge" "m4.4xlarge" "m4.10xlarge" "m4.16xlarge" "m3.medium" "m3.large" "m3.xlarge" "m3.2xlarge"))
-(setq aws-s3-regions (list "us-east-2" "us-east-1" "us-west-1" "us-west-2" "ca-central-1" "ap-south-1" "ap-northeast-2" "ap-southeast-1" "ap-southeast-2" "ap-northeast-1" "eu-central-1" "eu-west-1" "eu-west-2" "sa-east-1"))
 #+END_SRC
+*** aws-regions
+#+BEGIN_SRC elisp :tangle aws.el
+  (async-start
+   (lambda ()
+     (split-string
+      (shell-command-to-string "aws ec2 describe-regions  | jq ' .[]'  | jq '.[] | .RegionName'") "\n"))
+   (lambda (result)
+     (progn (setq aws-regions result)
+            (message "region list configured"))))
 
-** AWS services
-*** Compute
-**** EC2
-***** list instances
+#+END_SRC
+** Procedures
+*** Utilities
+**** aws top level command
+#+BEGIN_SRC elisp :tangle aws.el
+  (defun aws (command &optional output-format)
+    (interactive "scommmand")
+    (if (not (string= "" output-format))
+        (async-shell-command (concat "aws " command " --output " output-format)
+                             (concat "*AWS* - running command - " command))
+      (async-shell-command (concat "aws " command)
+                           (concat "*AWS* - running command - " command))))
+#+END_SRC
+***** version
+#+BEGIN_SRC elisp :tangle aws.el
+  (defun aws:version ()
+    (interactive)
+    (aws "--version"))
+#+END_SRC
+*** AWS services
+**** Compute
+***** EC2
+****** list instances
  #+BEGIN_SRC elisp :tangle aws.el
    (defun ec2:list-instances ()
      (interactive)
@@ -144,32 +180,39 @@
                           (concat "*EC2 - list instances*")
                           ))
  #+END_SRC
-***** list instances table
+****** list instances table
  #+BEGIN_SRC elisp :tangle aws.el
    (defun ec2:list-instances-table ()
    (interactive)
    (async-shell-command "aws ec2 describe-instances --output table"
 			(concat "*EC2 - list instances table*")))
  #+END_SRC
-***** list images in a given region
+****** list images in a given region
  #+BEGIN_SRC elisp :tangle aws.el
    (defun ec2:get-images-by-region (region)
      (interactive "swhat region: ")
      (async-shell-command (concat "aws ec2 describe-images --owners self --region " region)))
  #+END_SRC
-***** search for available AMI
+****** search for available AMI
  #+BEGIN_SRC elisp :tangle aws.el
    (defun ec2:search-for-ami (query)
      (interactive "squery: ") 
      (async-shell-command (concat "aws ec2 describe-images --owners amazon --filters Name=architecture,Values=x86_64 | grep " query)))
  #+END_SRC
-**** EC2 Container Service
-**** Lightsail
-***** spin up new lightsail instance
-      #+BEGIN_SRC elisp :tangle aws.el
+***** EC2 Container Service
+***** Lightsail
+****** get instances
+#+BEGIN_SRC elisp :tangle aws.el
+  (defun lightsail:get-instances ()
+    (interactive)
+    (let ((region (completing-read "region: " aws-regions)))
+      (aws (concat "lightsail " "get-instances"))))
+#+END_SRC
+****** spin up new lightsail instance
+#+BEGIN_SRC elisp :tangle aws.el
       
-      #+END_SRC
-***** run remote command , interactive server list
+#+END_SRC
+****** run remote command , interactive server list
  #+BEGIN_SRC elisp :tangle aws.el
    (defun lightsail:run-command-int (command) 
      (interactive "sCommand: ")
@@ -190,7 +233,7 @@
                               (concat "*lightsail* - " server " " command ))))
  #+END_SRC
 
-***** run remote command 
+****** run remote command 
  #+BEGIN_SRC elisp :tangle aws.el
    (defun lightsail:run-command (command server) 
      (interactive "sCommand: \nsServer: ")
@@ -208,7 +251,7 @@
                               (concat "*lightsail* - " server "" command )))
  #+END_SRC
 
-***** initialize dev environment
+****** initialize dev environment
  #+BEGIN_SRC elisp :tangle aws.el
    (defun lightsail:init-dev-environment ()
      (interactive)
@@ -222,7 +265,7 @@
                                "sudo apt-get -y install collectdg")
                               server)))
  #+END_SRC
-***** change timezone to pacfic
+****** change timezone to pacfic
  #+BEGIN_SRC elisp :tangle aws.el
  (defun lightsail:change-timezone-to-pacific ()
      (let ((server (completing-read "server:"  lightsail-server-list)))
@@ -231,128 +274,128 @@
                               server)))
 
  #+END_SRC
-**** Elastic Beanstalk
-***** install elastic beanstalk commnad line interface
+***** Elastic Beanstalk
+****** install elastic beanstalk commnad line interface
  #+BEGIN_SRC elisp :tangle aws.el
  (defun eb:install-cli ()
  (interactive)
  (pip:install-in-current-virtualenv "awsebcli"))
  #+END_SRC
-***** check dns availability
+****** check dns availability
  #+BEGIN_SRC elisp :tangle aws.el
    (defun eb:check-dns-availability (domain)
      (interactive "sdomain ")
      (async-shell-command (concat "aws elasticbeanstalk check-dns-availability --cname-prefix " domain)))
  #+END_SRC
-**** Lambda
-**** Batch
-*** Storage
-**** S3
-***** create bucket
+***** Lambda
+***** Batch
+**** Storage
+***** S3
+****** create bucket
  #+BEGIN_SRC elisp :tangle aws.el
    (defun s3:create-bucket (name)
      (interactive "sname: ")
      (let ((region (completing-read "region" aws-s3-regions)))
        (async-shell-command (concat "aws s3api create-bucket --bucket " name " --region " region " --create-bucket-configuration " region))))
  #+END_SRC
-**** EFS
-**** Glacier
-**** Storage Gateway
-*** Database
-**** RDS
-**** DynamoDB
-**** ElastiCache
-**** Amazon Redshift
-*** Networking & Content Delivery
-**** VPC
-**** CloudFront
-**** Direct Connect
-**** Route 53
-***** get dns zones
+***** EFS
+***** Glacier
+***** Storage Gateway
+**** Database
+***** RDS
+***** DynamoDB
+***** ElastiCache
+***** Amazon Redshift
+**** Networking & Content Delivery
+***** VPC
+***** CloudFront
+***** Direct Connect
+***** Route 53
+****** get dns zones
  #+BEGIN_SRC elisp :tangle aws.el
  (defun route53:get-hosted-zones ()
  (interactive)
  (async-shell-command "aws route53 list-hosted-zones"))
  #+END_SRC
-***** get domain names currently in dns
+****** get domain names currently in dns
  #+BEGIN_SRC elisp :tangle aws.el
    (defun route53:get-hosted-zones-by-name ()
      (interactive)
      (async-shell-command "aws route53 list-hosted-zones | jq '.HostedZones[].Name'"))
  #+END_SRC
-***** get more route53 information 
-*** Migration
-**** AWS Migration Hub
-**** Application Discovery Service
-**** Database Migration Service
-**** Server Migration Service
-**** Snowball
-*** Developer Tools
-**** CodeStar
-**** CodeCommit
-**** CodeBuild
-**** CodeDeploy
-**** CodePipeline
-**** X-Ray
-*** Management Tools
-**** CloudWatch
-**** CloudFormation
-**** CloudTrail
-**** Config
-**** OpsWorks
-**** Service Catalog
-**** Trusted Advisor
-**** Managed Services
-*** Security, Identity & Compliance
-**** IAM
-**** Inspector
-**** Certificate Manager
-**** Directory Service
-**** WAF & Shield
-**** Artifact
-**** Amazon Macie
-**** CloudHSM
-*** Analytics
-**** Athena
-**** EMR
-**** CloudSearch
-**** Elasticsearch Service
-**** Kinesis
-**** Data Pipeline
-**** QuickSight
-**** AWS Glue
-*** Artificial Intelligence
-**** Lex
-**** Amazon Polly
-**** Rekognition
-**** Machine Learning
-*** Internet of Things
-**** AWS IoT
-**** AWS Greengrass
-*** Contact Center
-**** Amazon Connect
-*** Game Development
-**** Amazon GameLift
-*** Mobile Services
-**** Mobile Hub
-**** Cognito
-**** Device Farm
-**** Mobile Analytics
-**** Pinpoint
-*** Application Services
-**** Step Functions
-**** SWF
-**** API Gateway
-**** Elastic Transcoder
-*** Messaging
-**** Simple Queue Service
-**** Simple Notification Service
-**** Simple Email Service
-*** Business Productivity
-**** WorkDocs
-**** WorkMail
-**** Amazon Chime
-*** Desktop & App Streaming
-**** WorkSpaces
-**** AppStream 2.0
+****** get more route53 information 
+**** Migration
+***** AWS Migration Hub
+***** Application Discovery Service
+***** Database Migration Service
+***** Server Migration Service
+***** Snowball
+**** Developer Tools
+***** CodeStar
+***** CodeCommit
+***** CodeBuild
+***** CodeDeploy
+***** CodePipeline
+***** X-Ray
+**** Management Tools
+***** CloudWatch
+***** CloudFormation
+***** CloudTrail
+***** Config
+***** OpsWorks
+***** Service Catalog
+***** Trusted Advisor
+***** Managed Services
+**** Security, Identity & Compliance
+***** IAM
+***** Inspector
+***** Certificate Manager
+***** Directory Service
+***** WAF & Shield
+***** Artifact
+***** Amazon Macie
+***** CloudHSM
+**** Analytics
+***** Athena
+***** EMR
+***** CloudSearch
+***** Elasticsearch Service
+***** Kinesis
+***** Data Pipeline
+***** QuickSight
+***** AWS Glue
+**** Artificial Intelligence
+***** Lex
+***** Amazon Polly
+***** Rekognition
+***** Machine Learning
+**** Internet of Things
+***** AWS IoT
+***** AWS Greengrass
+**** Contact Center
+***** Amazon Connect
+**** Game Development
+***** Amazon GameLift
+**** Mobile Services
+***** Mobile Hub
+***** Cognito
+***** Device Farm
+***** Mobile Analytics
+***** Pinpoint
+**** Application Services
+***** Step Functions
+***** SWF
+***** API Gateway
+***** Elastic Transcoder
+**** Messaging
+***** Simple Queue Service
+***** Simple Notification Service
+***** Simple Email Service
+**** Business Productivity
+***** WorkDocs
+***** WorkMail
+***** Amazon Chime
+**** Desktop & App Streaming
+***** WorkSpaces
+***** AppStream 2.0
 

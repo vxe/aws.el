@@ -1,7 +1,26 @@
 (defcustom lightsail-server-list nil "list of lightsail servers")
 
 (setq aws-ec2-machine-types (list "t2.nano" "t2.micro" "t2.small" "t2.medium" "t2.large" "t2.xlarge" "t2.2xlarge" "m4.large" "m4.xlarge" "m4.2xlarge" "m4.4xlarge" "m4.10xlarge" "m4.16xlarge" "m3.medium" "m3.large" "m3.xlarge" "m3.2xlarge" "t2.nano" "t2.micro" "t2.small" "t2.medium" "t2.large" "t2.xlarge" "t2.2xlarge" "m4.large" "m4.xlarge" "m4.2xlarge" "m4.4xlarge" "m4.10xlarge" "m4.16xlarge" "m3.medium" "m3.large" "m3.xlarge" "m3.2xlarge"))
-(setq aws-s3-regions (list "us-east-2" "us-east-1" "us-west-1" "us-west-2" "ca-central-1" "ap-south-1" "ap-northeast-2" "ap-southeast-1" "ap-southeast-2" "ap-northeast-1" "eu-central-1" "eu-west-1" "eu-west-2" "sa-east-1"))
+
+(async-start
+ (lambda ()
+   (split-string
+    (shell-command-to-string "aws ec2 describe-regions  | jq ' .[]'  | jq '.[] | .RegionName'") "\n"))
+ (lambda (result)
+   (progn (setq aws-regions result)
+          (message "region list configured"))))
+
+(defun aws (command &optional output-format)
+  (interactive "scommmand")
+  (if (not (string= "" output-format))
+      (async-shell-command (concat "aws " command " --output " output-format)
+                           (concat "*AWS* - running command - " command))
+    (async-shell-command (concat "aws " command)
+                         (concat "*AWS* - running command - " command))))
+
+(defun aws:version ()
+  (interactive)
+  (aws "--version"))
 
 (defun ec2:list-instances ()
   (interactive)
@@ -21,6 +40,13 @@
 (defun ec2:search-for-ami (query)
   (interactive "squery: ") 
   (async-shell-command (concat "aws ec2 describe-images --owners amazon --filters Name=architecture,Values=x86_64 | grep " query)))
+
+(defun lightsail:get-instances ()
+  (interactive)
+  (let ((region (completing-read "region: " aws-regions)))
+    (aws (concat "lightsail " "get-instances"))))
+
+
 
 (defun lightsail:run-command-int (command) 
   (interactive "sCommand: ")
