@@ -13,7 +13,7 @@
     - [[#utilities][Utilities]]
       - [[#aws-top-level-command][aws top level command]]
         - [[#version][version]]
-    - [[#aws-services][AWS services]]
+    - [[#aws-services][AWS Services]]
       - [[#compute][Compute]]
         - [[#ec2][EC2]]
           - [[#list-instances][list instances]]
@@ -169,7 +169,7 @@
     (interactive)
     (aws "--version"))
 #+END_SRC
-*** AWS services
+*** AWS Services
 **** Compute
 ***** EC2
 ****** list instances
